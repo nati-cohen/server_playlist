@@ -18,21 +18,10 @@ async function readOne(filter = {}, projection) {
 }
 
 
-
-// async function readOne(filter, projection ={}) {
-//   return await userModel.findOne({...filter , isActive:true} ,projection)
-//   .populate('playlist favorite')
-// }
-
-// async function update(email, data) {
-//   return await userModel.updateOne(email, data);
-// }
-
 async function update(email, object) {
   return await userModel.updateOne(
     { email, isActive: true },
     { ...object}
-
   );
 }
 
@@ -43,4 +32,4 @@ async function del(email) {
 }
 
 
-module.exports = { create, read, readOne, update, del };
+module.exports = { create, read, readOne,update, del };

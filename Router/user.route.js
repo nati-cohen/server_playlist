@@ -3,6 +3,8 @@ const
     router = express.Router()
 
 const userServices = require('../BL/user.service')
+const userController = require('../DL/controller/user.controller')
+const auth = require('../auth')
 
 
 
@@ -28,32 +30,6 @@ router.post("/login", async (req, res) => {
   });
 
 
-// router.post('/login',async (req, res)=>{
-//     try{
-//         const data = req.body
-//         userServices.login(data)
-//         res.send(data)
-//     }
-//     catch(err){
-//         console.log('login', err.message);
-//         res.status(err.code).send(err.msg)
-
-//     }
-// })
-
-// // register
-// router.post('/register',async (req, res)=>{
-//     try{
-//         const data = req.body
-//         userServices.register(data)
-//         res.send(data)
-//     }
-//     catch(err){
-//         res.status(400).send(err)
-
-//     }
-// })
-
 
 
 // get user
@@ -69,43 +45,4 @@ router.get('/user',async (req, res)=>{
 
 
 module.exports = router
-
-
-
-
-// // update user
-// router.put('/:userId',async (req, res)=>{
-//     try{
-//         const result = await userServices.updatename(req.params.itemId)
-//         res.send(result)
-       
-//     }
-//     catch(err){
-//         res.status(400).send(err)
-
-//     }
-// })
-
-// // delete user
-// router.delete('/:userId',async (req, res)=>{
-//     try{
-//         const result = await userServices.deleteuser(req.params.itemId)
-//         res.send(result)
-//     }
-//     catch(err){
-//       res.status(400).send(err)
-//     }
-// })
-
-
-// // get all users
-// router.get('/',async (req, res)=>{
-//     try{
-//         const result = await userServices.getAllUsers()
-//         res.send(result)
-//     }
-//     catch(err){
-//         res.status(400).send(err)
-//     }
-// })
 

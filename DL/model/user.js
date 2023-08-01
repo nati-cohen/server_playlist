@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+require('./song')
 const userSchema = new mongoose.Schema({
   name: {
      type: String, 
@@ -11,18 +11,19 @@ const userSchema = new mongoose.Schema({
     },
     playlist: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'playlist',
-        require: true,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'playlist',
+        // require: true,
       },
     ],
     favorite: [
       {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'favorite',
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'song',
         require: true,
       },
     ],
+    
   email: { 
     type: String, 
     required: true 
@@ -46,6 +47,8 @@ const userSchema = new mongoose.Schema({
 }
 
 });
+
+
 
 const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;

@@ -1,33 +1,24 @@
 const mongoose = require("mongoose");
-
+require('./song')
+require('./user')
 const favoriteSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    ref: "user"
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user', // Assuming your user model is named 'User'
+    required: true
   },
-  playlist: [
-    {
-      title: {
-        type: String,
+  userid:{
+    type:String,
+    required: true
+
+  },
+  songs : [{
+
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'song', // Assuming your song model is named 'Song'
         required: true
-      },
-      id: {
-        type: String,
-        required: true
-      },
-      thumbnail: {                  //thumbnail.url
-        type: String,
-        required: true
-      },
-      duration: {
-        type: String,
-        required: true
-      },
-      
-    },
-  ],
-});
+      } 
+  ]});
 
 const favoriteModel = mongoose.model("favorite", favoriteSchema);
 module.exports = favoriteModel;
