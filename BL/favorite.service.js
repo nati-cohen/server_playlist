@@ -75,5 +75,24 @@ async function removeFavoriteSong(userId, songId) {
 }
 
 
+// הפונקציה להצגת השירים האהובים של המשתמש
+async function getFavoriteSongs(userId) {
+  try {
+    // מציאת המשתמש לפי ה-Id
+    const user = await userModel.findById(userId).populate('favorite');
 
-module.exports = { addFavoriteSong, removeFavoriteSong }
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    const favoriteSongs = user.favorite;
+
+    return favoriteSongs;
+  } catch (error) {
+    throw new Error("Error getting favorite songs: " + error.message);
+  }
+}
+
+
+
+module.exports = { addFavoriteSong, removeFavoriteSong, getFavoriteSongs }
