@@ -1,48 +1,56 @@
 const
-    express = require('express'),
-    router = express.Router()
+  express = require('express'),
+  router = express.Router()
+
+const favoriteServices = require('../BL/favorite.service')
+const auth = require('../auth')
 
 const playlistServices = require('../BL/playlist.service')
 
 
-//login
-router.post('/login',async (req, res)=>{
-    try{
-        const data = req.body
-        userServices.login(data)
-        res.send(data)
-    }
-    catch(err){
-        res.status(400).send(err)
-
-    }
-})
-
-// register
-router.post('/register',async (req, res)=>{
-    try{
-        const data = req.body
-        userServices.register(data)
-        res.send(data)
-    }
-    catch(err){
-        res.status(400).send(err)
-
-    }
-})
+// POST ליצירת פלייליסט חדש
+router.post('/create',auth.verifyToken, async (req, res) => {
+    const song = req.body.song;
+    const userId = req.user
+    const namePlaylist = req.body.playlistName
+    console.log(userId, namePlaylist);
+//   const { namePlaylist, userId } = req.body;
+  try {
+    const updatedPlaylist = await playlistServices.createPlaylist(namePlaylist, userId, song);
+    return res.status(201).json({ message: 'Playlist created successfully', playlist: namePlaylist });
+  } catch (error) {
+    console.error('Error creating playlist:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 
-// get user
-router.get('/user',async (req, res)=>{
-    try{
-        const result = await userServices.getUser(req.body)
-        res.send(result)
+
+
+
+
+
+
+
+
+
+
+
+
+router.post("/addsong", auth.verifyToken, async (req, res) => {
+    try {
+      const song = req.body.song;
+      const userId = req.user
+  
+      const updatedUser = await playlistServices.addFavoriteSong(userId, song);
+      // console.log(updatedUser);
+      res.json({ message: "Song added to favorites successfully.", user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-    catch(err){
-        res.status(400).send(err)
-    }
-})
+  });
+  
 
 
 module.exports = router

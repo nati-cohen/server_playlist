@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 require('./song')
+require('./playlist')
 const userSchema = new mongoose.Schema({
   name: {
      type: String, 
@@ -11,9 +12,9 @@ const userSchema = new mongoose.Schema({
     },
     playlist: [
       {
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: 'playlist',
-        // require: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'playlist',
+        require: true,
       },
     ],
     favorite: [

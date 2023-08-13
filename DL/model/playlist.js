@@ -1,32 +1,24 @@
 const mongoose = require("mongoose");
-
+require('./user')
+require('./song')
 const playlistSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    ref: "user"
+  name:{
+    type: String, 
+    required: true 
   },
-  playlist: [
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+  songPlaylist: [
     {
-      title: {
-        type: String,
-        required: true
-      },
-      id: {
-        type: String,
-        required: true
-      },
-      thumbnail: {                  //thumbnail.url
-        type: String,
-        required: true
-      },
-      duration: {
-        type: String,
-        required: true
-      },
-      
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'song',
+      require: true,
     },
   ],
+  
 });
 
 const playlistModel = mongoose.model("playlist", playlistSchema);
