@@ -61,6 +61,35 @@ async function getplaylists(userId) {
     }
 }
 
+async function getSongs(playlistId) {
+    try {
+        const playlist = await playlistModel.findById(playlistId)
+        if (!playlist) {
+            throw new Error("playlist not found.");
+        }
+        const songIds = playlist.songPlaylist; // מערך של מזהים של השירים
+        const songs = await songModel.find({ _id: { $in: songIds } });
+        return songs;
+    } catch (error) {
+        throw new Error("Error getting playlist songs: " + error.message);
+    }
+}
+
+// async function getSongs(playlistId) {
+//     try {
+//         const playlist = await playlistModel.findById(playlistId);
+//         if (!playlist) {
+//             throw new Error("playlist not found.");
+//         }
+//         const songIds = playlist.songPlaylist; // מערך המזהים של השירים
+//         const songs = await songModel.find({ _id: { $in: songIds } }).populate('song');
+//         console.log(songs);
+//         return songs;
+//     } catch (error) {
+//         throw new Error("Error getting playlist songs: " + error.message);
+//     }
+// }
+
 
 
 async function addsongToPlaylist(song, userId, playlistId) {
@@ -135,4 +164,4 @@ async function addsongToPlaylist(song, userId, playlistId) {
 // }
 
 
-module.exports = { createPlaylist, getplaylists, addsongToPlaylist }
+module.exports = { createPlaylist, getplaylists, addsongToPlaylist,  getSongs }

@@ -42,6 +42,7 @@ router.post('/addsong', auth.verifyToken,async (req, res) => {
 router.get('/userplaylists', auth.verifyToken, async (req, res) => {
   try {
     const userId = req.user
+    const playlistId = req.body.playlistId
     const playlistUser = await playlistServices.getplaylists(userId);
     console.log(playlistUser);
     res.json({ playlistSongs: playlistUser })
@@ -49,6 +50,20 @@ router.get('/userplaylists', auth.verifyToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 })
+
+
+router.post('/songplaylist/', auth.verifyToken, async (req, res) => {
+  try {
+    const userId = req.user;
+    const playlistId = req.body.playlistId; 
+    const playlistUser = await playlistServices.getSongs(playlistId);
+    console.log(playlistUser);
+    res.json({ playlistSongs: playlistUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 
 

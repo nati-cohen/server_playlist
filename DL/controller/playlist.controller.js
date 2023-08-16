@@ -10,7 +10,7 @@ async function read(filter = {}) {
 }
 
 async function readOne(filter = {}) {
-  return await playlistModel.findOne({ ...filter, isActive: true });
+  return await playlistModel.findOne({ ...filter, isActive: true })
 }
 
 async function updateByemail(email, object) {
