@@ -163,5 +163,54 @@ async function addsongToPlaylist(song, userId, playlistId) {
 //     }
 // }
 
+async function removePlaylistSong(userId, songId, playlistId) {
+    try {
+        const song = await songModel.findOne({ _id: songId })
+        const user = await userModel.findById(userId);
+        const songPlaylists = await playlistModel.findOne({ _id: playlistId })
+        console.log(songPlaylists,song._id);
+        songPlaylists.songPlaylist.pull(song._id);
 
-module.exports = { createPlaylist, getplaylists, addsongToPlaylist,  getSongs }
+        await songPlaylists.save();
+        if (!user) {
+            throw new Error("User not found.");
+        }else {
+            console.log("Song is not in favorites.");
+        }
+
+        return user;
+    } catch (error) {
+        console.error("Error removing song from favorites:", error);
+        throw new Error("Error removing song from favorites: " + error.message);
+    }
+}
+
+async function removeplaylist(userId,playlistId) {
+    try {
+        const playlist = await playlistModel.findById(playlistId)
+        if (!playlist) {
+            throw new Error("playlist not found.");
+        }
+        const user = await userModel.findById(userId);
+        if (!user) {
+            throw new Error("User not found.");
+        }
+        if (user.playlist.includes(playlistId)) {
+            user.playlist.pull(playlistId);
+            await user.save();
+            await playlistModel.deleteOne({ _id: playlistId });
+
+        } else {
+            console.log("Song is not in favorites.");
+        }
+
+        return user;
+    } catch (error) {
+        console.error("Error removing song from favorites:", error);
+        throw new Error("Error removing song from favorites: " + error.message);
+    }
+}
+
+
+
+module.exports = { createPlaylist, getplaylists, addsongToPlaylist,  getSongs, removePlaylistSong ,removeplaylist}

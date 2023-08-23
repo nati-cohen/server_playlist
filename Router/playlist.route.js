@@ -44,7 +44,7 @@ router.get('/userplaylists', auth.verifyToken, async (req, res) => {
     const userId = req.user
     const playlistId = req.body.playlistId
     const playlistUser = await playlistServices.getplaylists(userId);
-    console.log(playlistUser);
+    // console.log(playlistUser);
     res.json({ playlistSongs: playlistUser })
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -57,24 +57,12 @@ router.post('/songplaylist/', auth.verifyToken, async (req, res) => {
     const userId = req.user;
     const playlistId = req.body.playlistId; 
     const playlistUser = await playlistServices.getSongs(playlistId);
-    console.log(playlistUser);
+    // console.log(playlistUser);
     res.json({ playlistSongs: playlistUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -92,5 +80,30 @@ router.post("/addsong", auth.verifyToken, async (req, res) => {
   });
   
 
+
+  router.post("/removesong", auth.verifyToken, async (req, res) => {
+    try {
+      const songId = req.body.song
+      const userId = req.user;
+      const playlistId = req.body.playlistId; 
+  
+      const updatedUser = await playlistServices.removePlaylistSong(userId, songId,playlistId );
+      res.json({ message: "Song removed from favorites successfully.", user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+
+  router.post("/removeplaylist", auth.verifyToken, async (req, res) => {
+    try {
+      const userId = req.user;
+      const playlistId = req.body.playlistId; 
+      const updatedUser = await playlistServices.removeplaylist(userId,playlistId );
+      res.json({ message: "Song removed from favorites successfully.", user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 module.exports = router
